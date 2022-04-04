@@ -34,7 +34,7 @@
     "build:bootstrap": "cp -r src/framework/bootstrap dist",
     "build:dev-schematics": "gulp build-development-schematics",
     "test": "ng test",
-    
+    "test:schematics": "gulp build-packages-schematics-for-test && jasmine dist/**/*.spec.js",
     "lint": "ng lint",
     "lint:styles": "stylelint ./src/framework/**/*.scss && stylelint ./docs/**/*.scss",
     "lint:fix": "lint-staged --config ./.lintstagedrc-fix.json",
