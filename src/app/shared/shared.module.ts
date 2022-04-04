@@ -22,7 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   exports: [
     TableComponent,
-    NbButtonModule, NbCardModule, NbInputModule, NbIconModule
+    NbButtonModule, NbCardModule, NbInputModule, NbIconModule, FormsModule, ReactiveFormsModule
   ]
 })
 export class SharedModule { }
