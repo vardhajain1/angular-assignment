@@ -1,0 +1,148 @@
+<nb-card>
+  <nb-card-body>
+    <div class="row">
+      <h3>Users</h3>
+      <button (click)="openWindow()" nbButton status="primary">Add User</button>
+      <button (click)="refreshData()" style="margin-left: 5px;" nbButton status="primary">Refresh Data</button>
+
+    </div>
+
+    <table *ngIf="allCols.length>0" [nbTreeGrid]="data">
+
+      <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allCols"></tr>
+      <tr [clickToToggle]="false" nbTreeGridRow *nbTreeGridRowDef="let row; columns: allCols"></tr>
+
+
+      <!-- <form [formGroup]="userForm">
+        <ng-container nbTreeGridColumnDef="firstName">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>First Name</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.firstName}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="firstName">
+          </td>
+        </ng-container>
+
+        <ng-container nbTreeGridColumnDef="middleName" [hideOn]="600">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Middle Name</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.middleName}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="middleName">
+          </td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="lastName">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Last Name</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.lastName}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="lastName">
+          </td>
+        </ng-container>
+
+        <ng-container nbTreeGridColumnDef="email" [hideOn]="1000">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Email</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.email}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="email">
+          </td>
+        </ng-container>
+
+        <ng-container nbTreeGridColumnDef="phoneNumber" [showOn]="1200">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Phone Number</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.phoneNumber}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="phoneNumber">
+          </td>
+        </ng-container>
+
+        <ng-container nbTreeGridColumnDef="role" [showOn]="1200">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Role</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.role}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="role">
+          </td>
+        </ng-container>
+
+        <ng-container nbTreeGridColumnDef="address" [showOn]="1200">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Address</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.address}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="address">
+          </td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="date" [showOn]="1200">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Date</th>
+          <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            <span *ngIf="row.data['actions']==buttonGroups.VIEW">{{row.data.date}}</span>
+            <input *ngIf="row.data['actions']==buttonGroups.EDIT" class="form-control" type="text"
+              formControlName="date">
+          </td>
+        </ng-container>
+        <ng-container nbTreeGridColumnDef="actions" [showOn]="1200">
+          <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Date</th>
+          <td *nbTreeGridCellDef="let row;let i=index">
+            <nb-card-body *ngIf="row.data['actions']==buttonGroups.VIEW">
+              <button (click)="editRow(i)" size="tiny" nbButton status="primary" class="actions">Edit</button>
+              <button (click)="deleteRow(i)" nbButton size="tiny" status="primary">Delete</button>
+            </nb-card-body>
+            <nb-card-body *ngIf="row.data['actions']==buttonGroups.EDIT">
+              <button (click)="saveChanges(i)" size="tiny" nbButton status="primary" class="actions">Save</button>
+              <button (click)="cancel(i)" nbButton size="tiny" status="primary">Cancel</button>
+            </nb-card-body>
+          </td>
+        </ng-container>
+      </form> -->
+
+
+      <ng-container *ngFor="let col of allColumns" [nbTreeGridColumnDef]="col.key">
+        <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>{{col.name}}</th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row;let i=index">
+          <ng-container *ngIf="row.data['actions']==buttonGroups.VIEW">
+            <span *ngIf="col.key!=='actions'">{{row.data[col.key] || '-'}}</span>
+            <nb-card-body *ngIf="col.key=='actions'">
+              <button (click)="editRow(i)" size="tiny" nbButton status="primary" class="actions">Edit</button>
+              <button (click)="deleteRow(i)" nbButton size="tiny" status="primary">Delete</button>
+            </nb-card-body>
+          </ng-container>
+          <ng-container *ngIf="row.data['actions']==buttonGroups.EDIT">
+            <input formControlName="{{col.key}}" *ngIf="col.key!=='actions'" [value]="row.data[col.key]">
+            <nb-card-body *ngIf="col.key=='actions'">
+              <button (click)="saveChanges(i)" size="tiny" nbButton status="primary" class="actions">Save</button>
+              <button (click)="cancel(i)" nbButton size="tiny" status="primary">Cancel</button>
+            </nb-card-body>
+          </ng-container>
+        </td>
+      </ng-container>
+
+    </table>
+
+  </nb-card-body>
+</nb-card>
+
+<ng-template #contentTemplate let-data>
+  <form [formGroup]="userForm" (ngSubmit)="data.index>-1?saveChanges(data.index):addUser()">
+    <nb-card>
+      <nb-card-body class="example-items-col">
+        <input nbInput class="form-control" formControlName="firstName" placeholder="First Name" type="text">
+        <input nbInput class="form-control" formControlName="middleName" placeholder="Middle Name" type="text">
+        <input nbInput class="form-control" formControlName="lastName" placeholder="Last Name" type="text">
+        <input nbInput class="form-control" formControlName="email" placeholder="Email" type="text">
+        <input nbInput class="form-control" formControlName="phoneNumber" placeholder="Phone Number" type="text">
+        <!-- <input nbInput class="form-control" formControlName="role" placeholder="Role" type="text"> -->
+        <nb-select formControlName="role" placeholder="Role">
+          <nb-option value="1">Super Admin</nb-option>
+          <nb-option value="2">Admin</nb-option>
+          <nb-option value="3">Subscrber</nb-option>
+        </nb-select>
+        <input nbInput class="form-control" formControlName="date" placeholder="Date" type="date">
+
+        <button type="submit" nbButton status="primary">Submit</button>
+      </nb-card-body>
+    </nb-card>
+  </form>
+</ng-template>

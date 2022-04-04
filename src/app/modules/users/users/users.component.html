@@ -1,0 +1,8 @@
+<nb-layout>
+    <nb-layout-column>
+        <nb-card *ngIf="!displayUsers">
+            <button status="primary" (click)="loadUsers()" nbButton>Load Users</button>
+        </nb-card>
+        <app-table *ngIf="displayUsers" [allColumns]="userColumns"></app-table>
+    </nb-layout-column>
+</nb-layout>
