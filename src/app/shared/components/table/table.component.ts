@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NbWindowRef, NbWindowService } from '@nebular/theme';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { NbWindowService } from '@nebular/theme';
 import { User } from '../../../core/models/user.model';
 
 const ButtonGroups = {
@@ -14,13 +14,19 @@ interface Record<T> {
   expanded?: boolean;
 }
 
+enum Roles {
+  SuperAdmin = 1,
+  Admin,
+  Subscriber
+}
+
 interface UserEntry {
   firstName: string;
   middleName: string;
   lastName: string;
   email?: string;
   phoneNumber?: number;
-  role?: string;
+  role?: number;
   address?: string;
   date?: string;
   actions?: number
@@ -40,7 +46,7 @@ export class TableComponent implements OnInit {
 
   data: Record<UserEntry>[] = [
     {
-      data: { firstName: 'Vardha', middleName: '-', lastName: 'Jain', email: 'vardha.jain@sourcefuse.com', phoneNumber: 122435346646, role: '1', address: 'leimakhong', date: '', actions: this.buttonGroups.VIEW },
+      data: { firstName: 'Vardha', middleName: '-', lastName: 'Jain', email: 'vardha.jain@sourcefuse.com', phoneNumber: 122435346646, role: 1, address: 'leimakhong', date: '', actions: this.buttonGroups.VIEW },
       expanded: false
     }
   ];
@@ -68,6 +74,19 @@ export class TableComponent implements OnInit {
     return this.fb.group(group);
   }
 
+  getRole(role) {
+    switch (role) {
+      case Roles.Admin:
+        return 'Admin'
+      case Roles.SuperAdmin:
+        return 'Super Admin'
+      case Roles.Subscriber:
+        return 'Subscriber'
+      default:
+        return '-'
+    }
+  }
+
   addUser() {
     console.log("user form", this.userForm.value)
     let record = {
@@ -89,8 +108,9 @@ export class TableComponent implements OnInit {
   }
 
   saveChanges(i?) {
-    console.log(i, this.data)
+    console.log(i, this.userForm.value)
     this.data[i].data = { ...new User(this.userForm.value), actions: this.buttonGroups.VIEW };
+    console.log(this.data)
     this.data = [...this.data]
     this.close();
   }

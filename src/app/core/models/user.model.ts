@@ -4,7 +4,7 @@ export class User {
     public lastName: string;
     public email: string;
     public phoneNumber: number;
-    public role: string;
+    public role: number;
     public address: string
     public date: any
     constructor(obj) {
@@ -13,7 +13,7 @@ export class User {
         this.lastName = obj.lastName || '';
         this.email = obj.email || '';
         this.phoneNumber = obj.phoneNumber || '';
-        this.role = obj.role || '';
+        this.role = Number(obj.role);
         this.address = obj.address || '';
         this.date = obj.date
     }
